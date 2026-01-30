@@ -1,9 +1,6 @@
 - hosts: all
   become: yes
 
-  vars:
-    redmine_port: 80
-
   roles:
     - role: geerlingguy.pip
       tags: setup
@@ -17,10 +14,15 @@
     - name: Create app
       tags: app
       block:
-        - name: Create environment variables from template
+        - name: Create directory for app
+          file:
+            path: '{{ app_dir }}'
+            state: directory
+
+        - name: Create environment variables
           template:
-            src: .env.example
-            dest: .env
+            src: .env.example.j2
+            dest: '{{ app_env }}'
 
         - name: Run container
           community.docker.docker_container:
@@ -28,5 +30,6 @@
             image: redmine
             state: started
             restart: true
+            env_file: '{{ app_env }}'
             ports:
-              - '{{ redmine_port }}:3000'
+              - '{{ redmine_port }}:{{ redmine_port_int }}'
