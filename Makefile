@@ -6,4 +6,7 @@ roles:
 
 run: roles setup
 
-.PHONY: roles setup run
+deploy:
+	ansible-playbook -i inventory.ini playbook.yml --tags="app"
+
+.PHONY: roles setup run deploy

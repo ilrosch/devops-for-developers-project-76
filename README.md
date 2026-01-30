@@ -2,6 +2,8 @@
 
 [![Actions Status](https://github.com/ilrosch/devops-for-developers-project-76/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ilrosch/devops-for-developers-project-76/actions)
 
+[DEMO](https://cloud.ilrosch.ru)
+
 ## Get started
 
 Install roles from requirements.yml:
@@ -16,7 +18,13 @@ Run tasks from playbook.yml:
 make setup # ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Full command (roles + run):
+Deploy app:
+
+```
+make deploy # ansible-playbook -i inventory.ini playbook.yml --tags="app"
+```
+
+Full command (roles + setup):
 
 ```
 make run # make roles & make setup

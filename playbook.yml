@@ -2,9 +2,31 @@
   become: yes
 
   vars:
-    pip_install_packages:
-      - name: docker
+    redmine_port: 80
 
   roles:
-    - geerlingguy.pip
-    - geerlingguy.docker
+    - role: geerlingguy.pip
+      tags: setup
+      vars:
+        pip_install_packages:
+          - name: docker
+    - role: geerlingguy.docker
+      tags: setup
+
+  tasks:
+    - name: Create app
+      tags: app
+      block:
+        - name: Create environment variables from template
+          template:
+            src: .env.example
+            dest: .env
+
+        - name: Run container
+          community.docker.docker_container:
+            name: redmine
+            image: redmine
+            state: started
+            restart: true
+            ports:
+              - '{{ redmine_port }}:3000'
