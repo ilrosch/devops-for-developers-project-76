@@ -7,11 +7,12 @@
       vars:
         pip_install_packages:
           - name: docker
+
     - role: geerlingguy.docker
       tags: setup
 
   tasks:
-    - name: Create app
+    - name: Create app (redmine)
       tags: app
       block:
         - name: Create directory for app

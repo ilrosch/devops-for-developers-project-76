@@ -1,4 +1,6 @@
 app_dir: redmine
 app_env: '{{ app_dir }}/.env'
+app_localhost: 127.0.0.1
+dd_site: us5.datadoghq.com
 redmine_port: 80
 redmine_port_int: 3000
