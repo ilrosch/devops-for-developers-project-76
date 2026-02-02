@@ -1,46 +1,43 @@
 - name: Rollback redmine app
   hosts: all
-  become: yes
+  become: true
   tags: app
   tasks:
     - name: Delete readmine container
       community.docker.docker_container:
         name: redmine
         state: absent
-      ignore_errors: yes
 
     - name: Delete environment file
-      file:
+      ansible.builtin.file:
         path: '{{ app_env }}'
         state: absent
-      ignore_errors: yes
 
     - name: Delete app directory
-      file:
+      ansible.builtin.file:
         path: '{{ app_dir }}'
         state: absent
-      ignore_errors: yes
 
 - name: Rollback Datadog Agent
   hosts: webservers
-  become: yes
+  become: true
   tags: dd
   tasks:
     - name: Remove datadog-agent package with purge
-      apt:
+      ansible.builtin.apt:
         name: datadog-agent
         state: absent
-        purge: yes
-        autoremove: yes
+        purge: true
+        autoremove: true
 
     - name: Remove dd-agent user and home directory
-      user:
+      ansible.builtin.user:
         name: dd-agent
         state: absent
-        remove: yes
+        remove: true
 
     - name: Remove leftover directories
-      file:
+      ansible.builtin.file:
         path: '{{ item }}'
         state: absent
       loop:

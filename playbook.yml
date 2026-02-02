@@ -1,29 +1,30 @@
-- hosts: all
-  become: yes
+- name: Deploy
+  hosts: all
+  become: true
+
+  vars:
+    pip_install_packages:
+      - name: docker
 
   roles:
     - role: geerlingguy.pip
       tags: setup
-      vars:
-        pip_install_packages:
-          - name: docker
-
-    - role: geerlingguy.docker
-      tags: setup
 
   tasks:
-    - name: Create app (redmine)
+    - name: Deploy Redmine application
       tags: app
       block:
         - name: Create directory for app
-          file:
+          ansible.builtin.file:
             path: '{{ app_dir }}'
             state: directory
+            mode: '0755'
 
         - name: Create environment variables
-          template:
+          ansible.builtin.template:
             src: .env.example.j2
             dest: '{{ app_env }}'
+            mode: '0600'
 
         - name: Run container
           community.docker.docker_container:

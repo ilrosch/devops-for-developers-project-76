@@ -21,19 +21,24 @@ Deploying an `redmine` application with installation of a `datadog` monitoring s
 Configure `inventory.ini` with your machine data:
 
 ```
-<name> ansible_host=<your-host> domain=<your-domain (not required)> ansible_user=<your-user>
+<name> ansible_host=<your-host> ansible_user=<your-user>
 ...
 ```
 
-Change `vault.yml` with your data ([redmine](https://hub.docker.com/_/redmine), [datadog](https://docs.datadoghq.com/agent/supported_platforms/ansible/#pagetitle)):
+Change `group_vars/all/vars.yml` with your db data ([redmine](https://hub.docker.com/_/redmine)):
 
 ```
-REDMINE_DB_POSTGRES: <db-host-name>
+REDMINE_DB_POSTGRES: <db-host>
+REDMINE_DB_PORT: <db-port>
 REDMINE_DB_DATABASE: <db-name>
-REDMINE_DB_USERNAME: <db-user>
-REDMINE_DB_PASSWORD: <password>
-REDMINE_DB_PORT: <port>
-DD_API_KEY: <datadog-key>
+REDMINE_DB_USERNAME: <db-username>
+```
+
+Change `vault.yml` with your data ([datadog](https://docs.datadoghq.com/agent/supported_platforms/ansible/#pagetitle)):
+
+```
+db_password: <password>
+dd_api_key: <datadog-key>
 ```
 
 Encrypt your data (`vault.yml`) and save your password (`.pass`):
